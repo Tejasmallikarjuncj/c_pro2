@@ -1,0 +1,49 @@
+#include "header.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int check(char p,char *k)
+{
+int flag = 0;
+int n = strlen(k);
+for(int i = 0;i<n;i++){
+if(p == *(k + i)){
+flag = 1;
+return 0;
+}
+}
+if(flag == 0)
+return 1;  
+}
+
+char* key(char *k)
+{
+int count = strlen(k);
+char *p;
+p = (char *)malloc(64*sizeof(char));
+for(int i =0;i<count;i++)
+*(p + i) = *(k + 1);
+for(int j = 48;j <= 57;j++){
+if(check((char)j,k)){
+*(p + count) = (char)j;
+count++;
+}
+}
+
+for(int j = 65;j <= 90;j++){
+if(check((char)j,k)){
+*(p + count) = (char)j;
+count++;
+}
+}
+
+for(int j = 97;j <= 122;j++){
+if(check((char)j,k)){
+*(p + count) = (char)j;
+count++;
+}
+}
+
+return p;
+}
