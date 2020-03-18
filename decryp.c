@@ -111,6 +111,7 @@ count++;
 p = (char *)realloc(p,count*sizeof(char));
 *(p + count - 1) = d;
 }
+return p;
 }
 
 else if(d == '~') 
@@ -119,17 +120,18 @@ count++;
 p = (char *)realloc(p,count*sizeof(char));
 *(p) = '~';
 *(p + 1) = d;
+return p;
 }
 
 else if((d == ' ')||(d == '\t')||(d == '\n')){
 *p = d;
+return p;
 }
 
 else if(d == EOF){
 *p = d;
-}
-
 return p;
+}
 }
 
 void decrypt(char *k){
@@ -141,6 +143,7 @@ b = (char *)malloc(2*sizeof(char));
 c = (char *)malloc(sizeof(char));
 while(*(s = unpack(s)) != EOF){
 if(strlen(s) == 1){
+printf("%c",*s);
 fputc(*s,outputd);
 }
 else if(strlen(s) == 2){
@@ -162,6 +165,7 @@ c = fair_d(c,k,(strlen(s) -1));
 for(int i = 0;i<(strlen(s)-1);i++)
 fputc(c[i],outputd);
 fputc(s[strlen(s) - 2],outputd);
+printf("%s",s);
 }
 else{
 s = fair_d(s,k,(strlen(s) -1));

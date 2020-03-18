@@ -6,14 +6,6 @@
 extern FILE *input;
 extern FILE *output;
 
-int search(char c, char *k){
-for(int i = 0; i < strlen(k);i ++){
-if(c == *(k + i)){
-return i;
-}
-}
-}
-
 
 char* fair_p(char* s,char* k, int n){
 
@@ -25,8 +17,8 @@ c2 = *(s + i + 1);
 a = search(c1,k);
 b = search(c2,k);
 if(a%8 == b%8){
-c1 = *(k + ((a)%8 + (a/8 + 1)*8));
-c2 = *(k + ((b)%8 + (b/8 + 1)*8));
+c1 = *(k + ((a)%8 + ((a/8 + 1)%8)*8));
+c2 = *(k + ((b)%8 + ((b/8 + 1)%8)*8));
 *(s + i) = c1;
 *(s + i + 1) = c2;
 }
@@ -39,20 +31,11 @@ c2 = *(k + ((b + 1)%8 + (b/8)*8));
 }
 
 else{
-if(a < b){
-c1 = *(k + (7 + (b/8)*8));
-c2 = *(k + ((b)%8 + (a/8)*8));
+c1 = *(k + b);
+c2 = *(k + a);
 *(s + i) = c1;
 *(s + i + 1) = c2;
-}
-else{
-c1 = *(k + ((a)%8 + (b/8)*8));
-c2 = *(k + (7 + (a/8)*8));
-*(s + i) = c1;
-*(s + i + 1) = c2;
-}
-}
-  
+}  
 }
 return s;
 }
@@ -72,6 +55,7 @@ count++;
 p = (char *)realloc(p,count*sizeof(char));
 *(p + count - 1) = d;
 }
+return p;
 }
 
 else if(((d >= 33) && (d <= 47))||((d >= 58) && (d <= 64))||((d >= 91) && (d <= 95))||((d >= 123) && (d <= 125))) 
@@ -80,16 +64,18 @@ count++;
 p = (char *)realloc(p,count*sizeof(char));
 *(p) = '~';
 *(p + 1) = d;
+return p;
 }
 
 else if((d == ' ')||(d == '\t')||(d == '\n')){
-*p = d;}
+*p = d;
+return p;
+}
 
 else if(d == EOF){
 *p = d;
-}
-
 return p;
+}
 }
 
 void encrypt(char *k){
@@ -104,8 +90,15 @@ if(strlen(s) == 1){
 fputc(*s,output);
 }
 else if(strlen(s) == 2){
+if(*s == '~'){
 for(int i = 0; i<strlen(s); i++)
 fputc(s[i],output);
+}
+else{
+s = fair_p(s,k,strlen(s));
+for(int i = 0;i<strlen(s);i++)
+fputc(s[i],output);
+}
 }
 else if(strlen(s) > 2){
 if(strlen(s)%2 == 1){

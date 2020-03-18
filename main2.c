@@ -3,8 +3,6 @@
 #include<stdlib.h>
 #include<string.h>
 
-FILE* input;
-FILE* output;
 FILE* inputd;
 FILE* outputd;
 
@@ -16,15 +14,15 @@ char o[50];
 char *k;
 char *s;
 int l;
-printf("Enter the file name to encrypted\n");
+printf("Enter the file name to decrypted\n");
 scanf("%s",i);
-input = fopen(i,"r");
-output = fopen("encpt.txt","w");
+inputd = fopen(i,"r");
+outputd = fopen("Decpt.txt","w");
 printf("Enter the lenght of the key");
 scanf("%d",&l);
 char p[l];
 printf("Enter the key");
 scanf("%s",p);
 k = key(p);
-encrypt(k);
+decrypt(k);
 }

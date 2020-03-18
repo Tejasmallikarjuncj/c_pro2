@@ -17,13 +17,21 @@ if(flag == 0)
 return 1;  
 }
 
+int search(char c, char *k){
+for(int i = 0; i < strlen(k);i ++){
+if(c == *(k + i)){
+return i;
+}
+}
+}
+
 char* key(char *k)
 {
 int count = strlen(k);
 char *p;
 p = (char *)malloc(64*sizeof(char));
 for(int i =0;i<count;i++)
-*(p + i) = *(k + 1);
+*(p + i) = *(k + i);
 for(int j = 48;j <= 57;j++){
 if(check((char)j,k)){
 *(p + count) = (char)j;
@@ -44,6 +52,5 @@ if(check((char)j,k)){
 count++;
 }
 }
-
 return p;
 }
