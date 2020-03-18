@@ -11,7 +11,7 @@ char* fair_p(char* s,char* k, int n){
 
 char c1,c2;
 int a,b;
-for(int i = 0;i <= n;i += 2){
+for(int i = 0;i < n-1;i += 2){
 c1 = *(s + i);
 c2 = *(s + i + 1);
 a = search(c1,k);
@@ -41,12 +41,29 @@ return s;
 }
 
 
-char* pack(char *p){
+char* pack(char *p,char *buf){
 
 int count = 1;
 char d;
-d = fgetc(input);
+p = (char *)malloc(sizeof(char)); 
+if(strlen(buf) == 1){
+*p = buf[0];
+*(buf) = '\0';
+*(buf + 1) = '\0';
+return p;
+}
 
+else if(strlen(buf) == 2){
+p = (char *)malloc(2*sizeof(char));
+*p = buf[0];
+*(p + 1) = buf[1];
+*(buf) = '\0';
+*(buf + 1) = '\0';
+return p;
+}
+
+else{
+d = fgetc(input);
 if(((d >= 48) && (d <= 57))||((d >= 65) && (d <= 90))||((d >= 97) && (d <= 122))){
 *p = d;
 while((( d >= 48) && (d <= 57))||((d >= 65) && (d <= 90))||((d >= 97) && (d <= 122))){
@@ -55,6 +72,20 @@ count++;
 p = (char *)realloc(p,count*sizeof(char));
 *(p + count - 1) = d;
 }
+char b;
+b = *(p + count - 1);
+if(((b >= 33) && (b <= 47))||((b >= 58) && (b <= 64))||((b >= 91) && (b <= 95))||((b >= 123) && (b <= 125))){
+*(buf) = '~';
+*(buf + 1) = b;
+*(p + count - 1) = '\0';
+p = (char *)realloc(p,(count-1)*sizeof(char));
+}
+else if((b == ' ')||(b == '\t')||(b == '\n')||(b == EOF)){
+*buf = b;
+*(p + count - 1) = '\0';
+p = (char *)realloc(p,(count-1)*sizeof(char));
+}
+printf("%s",p);
 return p;
 }
 
@@ -77,15 +108,18 @@ else if(d == EOF){
 return p;
 }
 }
+}
 
 void encrypt(char *k){
 char *s;
 char *b;
 char *c;
+char *buf; 
 s = (char *)malloc(sizeof(char));
 b = (char *)malloc(2*sizeof(char));
+buf = (char *)malloc(2*sizeof(char));
 c = (char *)malloc(sizeof(char));
-while(*(s = pack(s)) != EOF){
+while(*(s = pack(s,buf)) != EOF){
 if(strlen(s) == 1){
 fputc(*s,output);
 }
@@ -124,6 +158,7 @@ free(c);
 free(k);
 free(s);
 free(b);
+free(buf);
 fclose(input);
 fclose(output);
 }
