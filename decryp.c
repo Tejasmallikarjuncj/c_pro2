@@ -94,11 +94,12 @@ char* unpack(char *p, char *buf){
 
 int count = 1;
 char d;
-p = (char *)realloc(p,sizeof(char)); 
+p = (char *)malloc(sizeof(char)); 
 if(strlen(buf) == 1){
 *p = buf[0];
 *(buf) = '\0';
 *(buf + 1) = '\0';
+*(buf + 2) = '\0';
 return p;
 }
 
@@ -110,6 +111,8 @@ p = (char *)realloc(p,2*sizeof(char));
 *(buf + 1) = '\0';
 return p;
 }
+
+
 
 else{
 d = fgetc(inputd);
@@ -145,6 +148,7 @@ else if(d == '~')
 count++;
 p = (char *)realloc(p,count*sizeof(char));
 *(p) = '~';
+d = fgetc(inputd);
 *(p + 1) = d;
 return p;
 }
@@ -196,8 +200,8 @@ for(int i = 0;i<strlen(c);i++)
 fputc(*(c + i),outputd);
 char t = *(s + strlen(s) - 2);
 fputc(t,outputd);
-free(c);
-//c = (char *)realloc(c,0);
+//free(c);
+c = (char *)realloc(c,0);
 }
 else{
 s = fair_d(s,k,strlen(s));

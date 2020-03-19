@@ -1,2 +1,4 @@
-hello World i have encrypted this message
-hey i did it 
+I would first like to thank the people at Wiley  & Sons. To Dan Sayre, for getting this project going;
+to my editor Beth Golub, for all her patience and guidance during the evolution of the book; and
+to Samantha Mandel, Assistant Editor, for her invaluable help. I would also like to thank Harry
+Nolan, Design Director, who took the time to ensure that the book design turned out as I
