@@ -4,9 +4,9 @@ int check(char,char *);
 
 void encrypt(char *);
 
-char* pack(char *);
+char* pack(char *,char *);
 
-char* unpack(char *);
+char* unpack(char *,char *);
 
 void decrypt(char *);
 

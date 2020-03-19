@@ -85,7 +85,6 @@ else if((b == ' ')||(b == '\t')||(b == '\n')||(b == EOF)){
 *(p + count - 1) = '\0';
 p = (char *)realloc(p,(count-1)*sizeof(char));
 }
-printf("%s",p);
 return p;
 }
 

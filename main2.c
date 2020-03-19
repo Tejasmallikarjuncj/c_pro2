@@ -14,7 +14,7 @@ char o[50];
 char *k;
 char *s;
 int l;
-printf("Enter the file name to decrypted\n");
+printf("Enter the file name to decrypted");
 scanf("%s",i);
 inputd = fopen(i,"r");
 outputd = fopen("Decpt.txt","w");

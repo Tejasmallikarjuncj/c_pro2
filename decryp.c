@@ -11,7 +11,7 @@ char* fair_d(char* s,char* k, int n){
 
 char c1,c2;
 int a,b;
-for(int i = 0;i <= n;i += 2){
+for(int i = 0;i < n-1;i += 2){
 c1 = *(s + i);
 c2 = *(s + i + 1);
 a = search(c1,k);
@@ -24,15 +24,16 @@ c2 = *(k + ((b)%8 + (7)*8));
 *(s + i + 1) = c2;
 }
 
-else if((b == 0)||(a == 0)){
+
+else if((b/8 == 0)||(a/8 == 0)){
 if(a/8 == 0){
 c1 = *(k + ((a)%8 + (7)*8));
-c2 = *(k + ((b)%8 + (b/8 - 1)*8));
+c2 = *(k + ((b)%8 + ((b/8) - 1)*8));
 *(s + i) = c1;
 *(s + i + 1) = c2;
 }
 else if(b/8 == 0){
-c1 = *(k + ((a)%8 + (a/8 - 1)*8));
+c1 = *(k + ((a)%8 + ((a/8) - 1)*8));
 c2 = *(k + ((b)%8 + (7)*8));
 *(s + i) = c1;
 *(s + i + 1) = c2;
@@ -40,8 +41,8 @@ c2 = *(k + ((b)%8 + (7)*8));
 }
 
 else{
-c1 = *(k + ((a)%8 + (a - 1)*8));
-c2 = *(k + ((b)%8 + (b - 1)*8));
+c1 = *(k + ((a)%8 + ((a/8) - 1)*8));
+c2 = *(k + ((b)%8 + ((b/8) - 1)*8));
 *(s + i) = c1;
 *(s + i + 1) = c2;
 }
@@ -78,38 +79,63 @@ c2 = *(k + (b%8 - 1 + (b/8)*8));
 }
 
 else{
-if(a < b){
-c1 = *(k + (a%8 - 1 + (b/8)*8));
-c2 = *(k + (b%8 - 1 + (a/8)*8));
-*(s + i) = c1;
-*(s + i + 1) = c2;
-}
-else{
 c1 = *(k + b);
 c2 = *(k + a);
 *(s + i) = c1;
 *(s + i + 1) = c2;
+//printf("%c  %c\n",c1,c2);
 }
-}
-  
 }
 return s;
 }
 
 
-char* unpack(char *p){
+char* unpack(char *p, char *buf){
 
 int count = 1;
 char d;
-d = fgetc(inputd);
+p = (char *)realloc(p,sizeof(char)); 
+if(strlen(buf) == 1){
+*p = buf[0];
+*(buf) = '\0';
+*(buf + 1) = '\0';
+return p;
+}
 
-if(((d >= 48) && (d <= 57))||((d >= 65) && (d <= 90))||((d >= 97) && (d <= 122))||(d == '`')){
+else if(strlen(buf) == 2){
+p = (char *)realloc(p,2*sizeof(char));
+*p = buf[0];
+*(p + 1) = buf[1];
+*(buf) = '\0';
+*(buf + 1) = '\0';
+return p;
+}
+
+else{
+d = fgetc(inputd);
+if(((d >= 48) && (d <= 57))||((d >= 65) && (d <= 90))||((d >= 97) && (d <= 122))){
 *p = d;
-while(((d >= 48) && (d <= 57))||((d >= 65) && (d <= 90))||((d >= 97) && (d <= 122))||(d == '`')){
+while((( d >= 48) && (d <= 57))||((d >= 65) && (d <= 90))||((d >= 97) && (d <= 122))||(d == '`')||(d == '~')){
 d = fgetc(inputd);
 count++;
 p = (char *)realloc(p,count*sizeof(char));
 *(p + count - 1) = d;
+}
+char b;
+char c;
+b = *(p + count - 2);
+c = *(p + count - 1);
+if(b == '~'){
+*(buf) = '~';
+*(buf + 1) = *(p + count - 1);
+*(p + count - 1) = '\0';
+*(p + count - 2) = '\0';
+p = (char *)realloc(p,(count-2)*sizeof(char));
+}
+else if((c == ' ')||(c == '\t')||(c == '\n')||(c == EOF)){
+*buf = c;
+*(p + count - 1) = '\0';
+p = (char *)realloc(p,(count-1)*sizeof(char));
 }
 return p;
 }
@@ -133,23 +159,25 @@ else if(d == EOF){
 return p;
 }
 }
+}
 
 void decrypt(char *k){
 char *s;
 char *b;
+char *buf;
 char *c;
-s = (char *)malloc(sizeof(char));
+//s = (char *)malloc(sizeof(char));
 b = (char *)malloc(2*sizeof(char));
+buf = (char *)malloc(2*sizeof(char));
 c = (char *)malloc(sizeof(char));
-while(*(s = unpack(s)) != EOF){
+while(*(s = unpack(s,buf)) != EOF){
+//printf("%s\n",s);
 if(strlen(s) == 1){
-printf("%c",*s);
 fputc(*s,outputd);
 }
 else if(strlen(s) == 2){
 if(*s == '~'){
-for(int i = 0; i<strlen(s); i++)
-fputc(s[i],outputd);
+fputc(s[1],outputd);
 }
 else{
 s = fair_d(s,k,strlen(s));
@@ -159,24 +187,30 @@ fputc(s[i],outputd);
 }
 else if(strlen(s) > 2){
 if(*(s + strlen(s) -1) == '`'){
-c = (char *)realloc(c,(strlen(s) -2)*sizeof(char));
-c = strncpy(c,s,(strlen(s) -2));
-c = fair_d(c,k,(strlen(s) -1));
-for(int i = 0;i<(strlen(s)-1);i++)
-fputc(c[i],outputd);
-fputc(s[strlen(s) - 2],outputd);
-printf("%s",s);
+c = (char *)realloc(c,(strlen(s) - 2)*sizeof(char));
+strncpy(c,s,(strlen(s) -2));
+//printf("%s\n",c);
+c = fair_d(c,k,strlen(c));
+//printf("%s\n",c);
+for(int i = 0;i<strlen(c);i++)
+fputc(*(c + i),outputd);
+char t = *(s + strlen(s) - 2);
+fputc(t,outputd);
+free(c);
+//c = (char *)realloc(c,0);
 }
 else{
-s = fair_d(s,k,(strlen(s) -1));
+s = fair_d(s,k,strlen(s));
 for(int i = 0;i<strlen(s);i++)
-fputc(c[i],outputd);
+fputc(*(s + i),outputd);
 }
 }
+//s = (char *)realloc(s,0);
 }
 free(c);
 free(k);
 free(s);
+free(buf);
 free(b);
 fclose(inputd);
 fclose(outputd);

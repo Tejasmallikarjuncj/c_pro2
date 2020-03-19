@@ -5,8 +5,7 @@
 
 FILE* input;
 FILE* output;
-FILE* inputd;
-FILE* outputd;
+
 
 
 int main()
@@ -16,7 +15,7 @@ char o[50];
 char *k;
 char *s;
 int l;
-printf("Enter the file name to encrypted\n");
+printf("Enter the file name to encrypted");
 scanf("%s",i);
 input = fopen(i,"r");
 output = fopen("encpt.txt","w");
