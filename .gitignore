@@ -8,3 +8,5 @@ decrypt
 encpt.txt
 Decpt.txt
 temp/
+core
+tmp/
