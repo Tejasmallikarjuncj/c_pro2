@@ -1,3 +1,5 @@
+/*----DECLARATION OF FUNCTION OF ENCRYPTION AND DECRYPTION------*/
+
 char* key(char *);
 
 int check(char,char *);

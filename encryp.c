@@ -2,10 +2,13 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+/*---------FUNCTION FOR ENCRPYTION OF FILE---------*/
 
+/*------DECLARATION OF FILE POINTERS------------*/
 extern FILE *input;
 extern FILE *output;
 
+/*----------RULES OF ENCYPTION OF FAIR PLAY CIPHER-------------*/
 
 char* fair_p(char* s,char* k, int n){
 
@@ -40,6 +43,7 @@ c2 = *(k + a);
 return s;
 }
 
+/*--------SPLITTING THE FILE FOR ENCRYPTION----------*/
 
 char* pack(char *p,char *buf){
 
@@ -108,6 +112,8 @@ return p;
 }
 }
 }
+
+/*--------ENCRYPTION OF WHOLE FILE-------*/
 
 void encrypt(char *k){
 char *s;

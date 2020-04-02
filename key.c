@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*---FUNCTION FOR GENERATIING KEY SQUARE---*/
+
+
 int check(char p,char *k)
 {
 int flag = 0;
@@ -24,6 +27,8 @@ return i;
 }
 }
 }
+
+/*---KEY SQUARE GENERATION----*/
 
 char* key(char *k)
 {

@@ -3,12 +3,15 @@
 #include<stdlib.h>
 #include<string.h>
 
+/*--------FUNCTION FOR DECRYPTION---------*/
+
+/*--------DECLARATION OF FILE PIONTERS-----*/
 extern FILE *inputd;
 extern FILE *outputd;
 
 
+/*-------RULES FOR DECRYPTION OF FAIR PLAY CIPHER------*/
 char* fair_d(char* s,char* k, int n){
-
 char c1,c2;
 int a,b;
 for(int i = 0;i < n-1;i += 2){
@@ -83,12 +86,12 @@ c1 = *(k + b);
 c2 = *(k + a);
 *(s + i) = c1;
 *(s + i + 1) = c2;
-//printf("%c  %c\n",c1,c2);
 }
 }
 return s;
 }
 
+/*---SPLITTING THE FILE FOR DECRYPTION-----*/
 
 char* unpack(char *p, char *buf){
 
@@ -111,8 +114,6 @@ p = (char *)realloc(p,2*sizeof(char));
 *(buf + 1) = '\0';
 return p;
 }
-
-
 
 else{
 d = fgetc(inputd);
@@ -165,6 +166,8 @@ return p;
 }
 }
 
+/*-----FUNCTION FOR THE DECRYPTION OF THE WHOLE FILE------*/
+
 void decrypt(char *k){
 char *s;
 char *b;
@@ -175,7 +178,6 @@ b = (char *)malloc(2*sizeof(char));
 buf = (char *)malloc(2*sizeof(char));
 c = (char *)malloc(sizeof(char));
 while(*(s = unpack(s,buf)) != EOF){
-//printf("%s\n",s);
 if(strlen(s) == 1){
 fputc(*s,outputd);
 }
@@ -193,14 +195,11 @@ else if(strlen(s) > 2){
 if(*(s + strlen(s) -1) == '`'){
 c = (char *)realloc(c,(strlen(s) - 2)*sizeof(char));
 strncpy(c,s,(strlen(s) -2));
-//printf("%s\n",c);
 c = fair_d(c,k,strlen(c));
-//printf("%s\n",c);
 for(int i = 0;i<strlen(c);i++)
 fputc(*(c + i),outputd);
 char t = *(s + strlen(s) - 2);
 fputc(t,outputd);
-//free(c);
 c = (char *)realloc(c,0);
 }
 else{
@@ -209,7 +208,6 @@ for(int i = 0;i<strlen(s);i++)
 fputc(*(s + i),outputd);
 }
 }
-//s = (char *)realloc(s,0);
 }
 free(c);
 free(k);
