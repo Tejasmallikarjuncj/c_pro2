@@ -28,4 +28,5 @@ printf("Enter the key ");
 scanf("%s",p);
 k = key(p);
 decrypt(k);
+printf("\nThe edcryption is succesfully made and it is in Decpt.txt\n");
 }

@@ -30,4 +30,5 @@ printf("Enter the key ");
 scanf("%s",p);
 k = key(p);
 encrypt(k);
+printf("\nThe encryption is succesfully made and it is in encpt.txt\n");
 }
